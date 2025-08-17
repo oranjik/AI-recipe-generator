@@ -1,0 +1,57 @@
+{
+  "name": "ai-recipe-chef",
+  "version": "1.0.0",
+  "description": "AI-powered recipe generator with premium features",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "build": "npm install --production",
+    "preview": "NODE_ENV=production node server.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "lint": "eslint . --ext .js",
+    "lint:fix": "eslint . --ext .js --fix",
+    "validate": "npm run lint && npm run test",
+    "deploy": "vercel --prod",
+    "deploy:preview": "vercel",
+    "logs": "vercel logs",
+    "env": "vercel env",
+    "setup": "npm install && cp .env.example .env",
+    "clean": "rm -rf node_modules package-lock.json && npm install",
+    "health-check": "curl -f http://localhost:3000/api/health || exit 1"
+  },
+  "keywords": ["ai", "recipe", "food", "cooking", "openai"],
+  "author": "AI Recipe Chef Team",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "express-rate-limit": "^7.1.5",
+    "dotenv": "^16.3.1",
+    "openai": "^4.20.1",
+    "@supabase/supabase-js": "^2.38.4",
+    "stripe": "^14.7.0",
+    "amazon-paapi": "^1.1.1",
+    "redis": "^4.6.10",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "joi": "^17.11.0",
+    "winston": "^3.11.0",
+    "compression": "^1.7.4",
+    "express-validator": "^7.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2",
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3",
+    "eslint": "^8.55.0",
+    "eslint-config-node": "^4.1.0",
+    "eslint-plugin-node": "^11.1.0",
+    "@vercel/node": "^3.0.12"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

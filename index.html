@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Recipe Chef - 인공지능 레시피 생성기</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-emoji">🍳</div>
+        <div class="floating-emoji">🥘</div>
+        <div class="floating-emoji">🍜</div>
+        <div class="floating-emoji">🥗</div>
+        <div class="floating-emoji">🍲</div>
+        <div class="floating-emoji">🧑‍🍳</div>
+    </div>
+
+    <div class="app">
+        <!-- Screen 1: Landing Page -->
+        <div id="landing" class="screen active">
+            <div class="header">
+                <div class="logo">🍳 AI Recipe Chef</div>
+                <div class="nav">
+                    <div class="nav-item" data-screen="landing">홈</div>
+                    <div class="nav-item" data-screen="generator">레시피 생성</div>
+                    <div class="nav-item premium" data-screen="membership">프리미엄 ✨</div>
+                    <div class="nav-item">로그인</div>
+                </div>
+            </div>
+            
+            <div class="hero">
+                <div class="hero-content">
+                    <h1>AI로 놀라운 레시피를 만들어보세요</h1>
+                    <p>당신의 재료를 요리 걸작으로 변환하는 지능형 레시피 생성기</p>
+                    <button class="cta-button" data-screen="generator">지금 요리 시작하기 🚀</button>
+                </div>
+            </div>
+            
+            <div class="features">
+                <div class="feature">
+                    <span class="feature-icon">🤖</span>
+                    <h3>AI 기반 마법</h3>
+                    <p>고급 AI가 당신의 취향과 사용 가능한 재료에 맞춤형 독특한 레시피를 만듭니다</p>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">🌍</span>
+                    <h3>세계 각국의 요리</h3>
+                    <p>전 세계 요리를 탐험하고, 국제 음식 애호가들에게 완벽합니다</p>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">🛒</span>
+                    <h3>스마트 쇼핑</h3>
+                    <p>아마존에서 직접 구매할 수 있는 링크와 함께 재료 추천을 받으세요</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Screen 2: Recipe Generator -->
+        <div id="generator" class="screen">
+            <div class="header">
+                <div class="logo">🍳 AI Recipe Chef</div>
+                <div class="nav">
+                    <div class="nav-item" data-screen="landing">홈</div>
+                    <div class="nav-item" data-screen="generator">레시피 생성</div>
+                    <div class="nav-item premium" data-screen="membership">프리미엄 ✨</div>
+                    <div class="nav-item">로그인</div>
+                </div>
+            </div>
+            
+            <button class="back-button" data-screen="landing">← 홈으로 돌아가기</button>
+            
+            <div class="recipe-form">
+                <h2>완벽한 레시피 생성하기</h2>
+                <div class="free-limit">
+                    <strong>🎯 무료 계정:</strong> 오늘 3개의 레시피가 남았습니다. <a href="#" data-screen="membership">무제한 레시피를 위해 업그레이드</a>
+                </div>
+                
+                <form id="recipeForm">
+                    <div class="form-group">
+                        <label>🥕 사용 가능한 재료</label>
+                        <textarea id="ingredients" placeholder="닭가슴살, 양파, 마늘, 쌀, 피망, 토마토..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>🌏 요리 유형</label>
+                        <select id="cuisine">
+                            <option value="">어떤 요리든</option>
+                            <option value="korean">🍚 한식</option>
+                            <option value="italian">🍝 이탈리안</option>
+                            <option value="asian">🍜 아시아</option>
+                            <option value="mexican">🌮 멕시칸</option>
+                            <option value="american">🍔 미국식</option>
+                            <option value="mediterranean">🥙 지중해식</option>
+                            <option value="indian">🍛 인도식</option>
+                            <option value="french">🥐 프랑스식</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>⏰ 조리 시간</label>
+                        <select id="cookingTime">
+                            <option value="">상관없음</option>
+                            <option value="quick">⚡ 15분 미만</option>
+                            <option value="medium">🏃 15-30분</option>
+                            <option value="long">🚶 30-60분</option>
+                            <option value="extended">🐌 1시간 이상</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>🥗 식단 제한</label>
+                        <select id="dietary">
+                            <option value="">없음</option>
+                            <option value="vegetarian">🥬 채식주의</option>
+                            <option value="vegan">🌱 비건</option>
+                            <option value="gluten-free">🌾 글루텐 프리</option>
+                            <option value="low-carb">⚡ 저탄수화물</option>
+                            <option value="keto">🥑 케토</option>
+                            <option value="high-protein">🏃 고단백</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>👨‍🍳 요리 실력 수준</label>
+                        <select id="skillLevel">
+                            <option value="beginner">🔰 초보자</option>
+                            <option value="intermediate">⭐ 중급자</option>
+                            <option value="advanced">🏆 고급자</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="cta-button" style="width: 100%; margin-top: 20px;">놀라운 레시피 생성하기 ✨</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Screen 3: Recipe Result -->
+        <div id="result" class="screen">
+            <div class="header">
+                <div class="logo">🍳 AI Recipe Chef</div>
+                <div class="nav">
+                    <div class="nav-item" data-screen="landing">홈</div>
+                    <div class="nav-item" data-screen="generator">레시피 생성</div>
+                    <div class="nav-item premium" data-screen="membership">프리미엄 ✨</div>
+                    <div class="nav-item">로그인</div>
+                </div>
+            </div>
+            
+            <button class="back-button" data-screen="generator">← 다른 레시피 만들기</button>
+            
+            <div class="recipe-result" id="recipeResult">
+                <!-- 동적으로 생성될 레시피 결과 -->
+            </div>
+            
+            <div class="amazon-products">
+                <h3>🛒 아마존 추천 상품</h3>
+                <div class="product-grid" id="productGrid">
+                    <!-- 동적으로 생성될 상품 목록 -->
+                </div>
+            </div>
+            
+            <button class="cta-button save-recipe-btn" style="width: calc(100% - 80px); margin: 20px 40px;">💾 레시피 컬렉션에 저장 (프리미엄)</button>
+        </div>
+        
+        <!-- Screen 4: Membership -->
+        <div id="membership" class="screen">
+            <div class="header">
+                <div class="logo">🍳 AI Recipe Chef</div>
+                <div class="nav">
+                    <div class="nav-item" data-screen="landing">홈</div>
+                    <div class="nav-item" data-screen="generator">레시피 생성</div>
+                    <div class="nav-item premium" data-screen="membership">프리미엄 ✨</div>
+                    <div class="nav-item">로그인</div>
+                </div>
+            </div>
+            
+            <button class="back-button" data-screen="landing">← 홈으로 돌아가기</button>
+            
+            <div class="membership-card">
+                <h2>✨ 프리미엄 가입</h2>
+                <p class="subtitle">무제한 레시피와 고급 기능을 잠금 해제하세요</p>
+                <div class="price">₩9,900<span style="font-size: 24px; font-weight: 400;">/월</span></div>
+                
+                <div class="benefits">
+                    <h3>🎯 프리미엄 혜택</h3>
+                    <ul>
+                        <li>✅ 무제한 레시피 생성</li>
+                        <li>💾 개인 컬렉션에 레시피 저장</li>
+                        <li>🎨 고급 식단 커스터마이징</li>
+                        <li>📊 상세한 영양 정보</li>
+                        <li>📝 자동 쇼핑 목록 생성</li>
+                        <li>⭐ 레시피 평점 및 리뷰</li>
+                        <li>💬 우선 고객 지원</li>
+                        <li>🍽️ 프리미엄 요리 접근</li>
+                    </ul>
+                </div>
+                
+                <button class="cta-button" style="width: 100%; margin-top: 20px;">🚀 7일 무료 체험 시작</button>
+                <p style="margin-top: 20px; font-size: 16px; color: #a0aec0;">언제든지 취소 가능. 약정 없음.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Paywall Modal -->
+    <div id="paywall" class="paywall">
+        <div class="paywall-content">
+            <h2>🔒 프리미엄 기능</h2>
+            <p>이 기능은 프리미엄 멤버십이 필요합니다</p>
+            <p>무제한 레시피를 잠금 해제하고 즐겨찾기를 저장하세요!</p>
+            <button class="cta-button" data-screen="membership" style="margin: 24px 10px 10px 0;">✨ 지금 업그레이드</button>
+            <button class="back-button close-paywall">닫기</button>
+        </div>
+    </div>
+
+    <!-- Loading Modal -->
+    <div id="loadingModal" class="loading-modal">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h3>🔮 AI가 레시피를 생성하고 있습니다...</h3>
+            <p>완벽한 레시피를 위해 재료를 분석 중입니다</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Recipe Chef - Modern Design</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #2d3748;
+            overflow-x: hidden;
+        }
+
+        .app {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            min-height: 100vh;
+            backdrop-filter: blur(10px);
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .screen {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff6b6b, #ffa500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .nav-item {
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.7);
+            color: #4a5568;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .nav-item.premium {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-weight: 600;
+        }
+
+        .nav-item.premium:hover {
+            background: linear-gradient(135deg, #5a67d8, #6b46c1);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 80px 40px 60px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            margin: 0 20px 40px;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="%23ffffff" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="%23ffffff" opacity="0.1"/><circle cx="50" cy="10" r="1" fill="%23ffffff" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.5;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #2d3748, #4a5568);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 22px;
+            color: #718096;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #ff6b6b, #ffa500);
+            color: white;
+            padding: 18px 48px;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(255, 107, 107, 0.4);
+        }
+
+        .cta-button:active {
+            transform: translateY(-1px);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            padding: 0 40px 60px;
+        }
+
+        .feature {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .feature:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .feature h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #2d3748;
+        }
+
+        .feature p {
+            color: #718096;
+            line-height: 1.6;
+        }
+
+        .recipe-form {
+            max-width: 700px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .recipe-form h2 {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #2d3748;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: #4a5568;
+            font-size: 16px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid rgba(226, 232, 240, 0.8);
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        .free-limit {
+            background: linear-gradient(135deg, #fed7d7, #fbb6ce);
+            border: 2px solid rgba(245, 101, 101, 0.2);
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 16px;
+            text-align: center;
+            color: #742a2a;
+            font-weight: 500;
+        }
+
+        .free-limit a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .recipe-result {
+            background: linear-gradient(135deg, rgba(72, 187, 120, 0.1), rgba(56, 178, 172, 0.1));
+            border: 2px solid rgba(72, 187, 120, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 20px 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        .recipe-result h2 {
+            color: #2f855a;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .recipe-meta {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
+        .recipe-meta span {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 500;
+            color: #4a5568;
+        }
+
+        .ingredients,
+        .instructions {
+            margin-bottom: 32px;
+        }
+
+        .ingredients h3,
+        .instructions h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #2f855a;
+        }
+
+        .ingredients ul,
+        .instructions ol {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 24px 40px;
+            border-radius: 16px;
+            backdrop-filter: blur(5px);
+        }
+
+        .ingredients li,
+        .instructions li {
+            margin-bottom: 12px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .amazon-products {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(245, 158, 11, 0.1));
+            border: 2px solid rgba(251, 191, 36, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 40px;
+        }
+
+        .amazon-products h3 {
+            color: #d69e2e;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .product-item {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .product-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .product-item .product-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
+        .product-item h4 {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2d3748;
+        }
+
+        .product-item .price {
+            font-size: 20px;
+            font-weight: 700;
+            color: #d69e2e;
+            margin-bottom: 8px;
+        }
+
+        .product-item small {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .membership-card {
+            background: linear-gradient(135deg, rgba(159, 122, 234, 0.1), rgba(139, 92, 246, 0.1));
+            border: 2px solid rgba(159, 122, 234, 0.2);
+            border-radius: 24px;
+            padding: 50px 40px;
+            margin: 20px 40px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .membership-card h2 {
+            color: #7c3aed;
+            font-size: 40px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .membership-card .subtitle {
+            font-size: 20px;
+            color: #718096;
+            margin-bottom: 32px;
+        }
+
+        .price {
+            font-size: 56px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 32px 0;
+        }
+
+        .benefits {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 16px;
+            padding: 32px;
+            margin: 32px 0;
+            text-align: left;
+            backdrop-filter: blur(5px);
+        }
+
+        .benefits h3 {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: #2d3748;
+        }
+
+        .benefits ul {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .benefits li {
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            color: #4a5568;
+            padding: 8px 0;
+        }
+
+        .back-button {
+            background: rgba(160, 174, 192, 0.2);
+            color: #4a5568;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 20px 40px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-button:hover {
+            background: rgba(160, 174, 192, 0.3);
+            transform: translateX(-5px);
+        }
+
+        .paywall {
+            background: rgba(0,0,0,0.8);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .paywall.active {
+            display: flex;
+        }
+
+        .paywall-content {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px;
+            border-radius: 24px;
+            text-align: center;
+            max-width: 480px;
+            width: 90%;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+        }
+
+        .paywall-content h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #2d3748;
+        }
+
+        .paywall-content p {
+            font-size: 18px;
+            color: #718096;
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-emoji {
+            position: absolute;
+            font-size: 24px;
+            opacity: 0.1;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
+        }
+
+        .floating-emoji:nth-child(1) { left: 10%; animation-delay: -5s; }
+        .floating-emoji:nth-child(2) { left: 20%; animation-delay: -10s; }
+        .floating-emoji:nth-child(3) { left: 30%; animation-delay: -15s; }
+        .floating-emoji:nth-child(4) { left: 70%; animation-delay: -8s; }
+        .floating-emoji:nth-child(5) { left: 80%; animation-delay: -12s; }
+        .floating-emoji:nth-child(6) { left: 90%; animation-delay: -3s; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 36px; }
+            .features { grid-template-columns: 1fr; padding: 0 20px 40px; }
+            .benefits ul { grid-template-columns: 1fr; }
+            .nav { gap: 4px; }
+            .nav-item { padding: 8px 16px; font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-emoji">🍳</div>
+        <div class="floating-emoji">🥘</div>
+        <div class="floating-emoji">🍜</div>
+        <div class="floating-emoji">🥗</div>
+        <div class="floating-emoji">🍲</div>
+        <div class="floating-emoji">🧑‍🍳</div>
+    </div>
+
+    <div class="app">
+        <!-- Screen 1: Landing Page -->
+        <div id="landing" class="screen active">
+            <div class="header">
+                <div class="logo">🍳 AI Recipe Chef</div>
+                <div class="nav">
+                    <div class="nav-item" onclick="showScreen('landing')">Home</div>
+                    <div class="nav-item" onclick="showScreen('generator')">Create Recipe</div>
+                    <div class="nav-item premium" onclick="showScreen('membership')">Go Premium ✨</div>
+                    <div class="nav-item">Login</div>
+                </div>
+            </div>
+            
+            <div class="hero">
+                <div class="hero-content">
+                    <h1>Create Amazing Recipes with AI</h1>
+                    <p>Transform your ingredients into culinary masterpieces with our intelligent recipe generator</p>
+                    <button class="cta-button" onclick="showScreen('generator')">Start Cooking Now 🚀</button>
+                </div>
+            </div>
+            
+            <div class="features">
+                <div class="feature">
+                    <span class="feature-icon">🤖</span>
+                    <h3>AI-Powered Magic</h3>
+                    <p>Advanced AI creates unique recipes tailored to your preferences and available ingredients</p>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">🌍</span>
+                    <h3>Global Cuisines</h3>
+                    <p>Explore recipes from around the world, perfect for international food lovers</p>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">🛒</span>
+                    <h3>Smart Shopping</h3>
+                    <p>Get ingredient recommendations with direct links to purchase on Amazon</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Screen 2: Recipe Generator -->
+        <div id="generator" class="screen">
+            <div class="header">
+                <div class="logo">🍳 AI Recipe Chef</div>
+                <div class="nav">
+                    <div class="nav-item" onclick="showScreen('landing')">Home</div>
+                    <div class="nav-item" onclick="showScreen('generator')">Create Recipe</div>
+                    <div class="nav-item premium" onclick="showScreen('membership')">Go Premium ✨</div>
+                    <div class="nav-item">Login</div>
+                </div>
+            </div>
+            
+            <button class="back-button" onclick="showScreen('landing')">← Back to Home</button>
+            
+            <div class="recipe-form">
+                <h2>Generate Your Perfect Recipe</h2>
+                <div class="free-limit">
+                    <strong>🎯 Free Account:</strong> 3 recipes remaining today. <a href="#" onclick="showScreen('membership')">Upgrade for unlimited recipes</a>
+                </div>
+                
+                <div class="form-group">
+                    <label>🥕 Available Ingredients</label>
+                    <textarea placeholder="chicken breast, onions, garlic, rice, bell peppers, tomatoes..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>🌏 Cuisine Type</label>
+                    <select>
+                        <option>Any Cuisine</option>
+                        <option>🍝 Italian</option>
+                        <option>🍜 Asian</option>
+                        <option>🌮 Mexican</option>
+                        <option>🍔 American</option>
+                        <option>🥙 Mediterranean</option>
+                        <option>🍛 Indian</option>
+                        <option>🥐 French</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>⏰ Cooking Time</label>
+                    <select>
+                        <option>Any Time</option>
+                        <option>⚡ Under 15 minutes</option>
+                        <option>🏃 15-30 minutes</option>
+                        <option>🚶 30-60 minutes</option>
+                        <option>🐌 Over 1 hour</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>🥗 Dietary Restrictions</label>
+                    <select>
+                        <option>None</option>
+                        <option>🥬 Vegetarian</option>
+                        <option>🌱 Vegan</option>
+                        <option>🌾 Gluten-Free</option>
+                        <option>⚡ Low-Carb</option>
+                        <option>🥑 Keto</option>
+                        <option>🏃 High-Protein</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>👨‍🍳 Cooking Skill Level</label>
+                    <select>
+                        <option>🔰 Beginner</option>
+                        <option>⭐ Intermediate</option>
+                        <option>🏆 Advanced</option>
+                    </select>
+                </div>
+                
+                <button class="cta-button" onclick="generateRecipe()" style="width: 100%; margin-top: 20px;">Generate Amazing Recipe ✨</button>
+            </div>
+        </div>
+        
+        <!-- Screen 3: Recipe Result -->
+        <div id="result" class="screen">
+            <div class="header">
+                <div class="logo">🍳 AI Recipe Chef</div>
+                <div class="nav">
+                    <div class="nav-item" onclick="showScreen('landing')">Home</div>
+                    <div class="nav-item" onclick="showScreen('generator')">Create Recipe</div>
+                    <div class="nav-item premium" onclick="showScreen('membership')">Go Premium ✨</div>
+                    <div class="nav-item">Login</div>
+                </div>
+            </div>
+            
+            <button class="back-button" onclick="showScreen('generator')">← Create Another Recipe</button>
+            
+            <div class="recipe-result">
+                <h2>🍗 Asian-Style Chicken & Bell Pepper Stir Fry</h2>
+                <div class="recipe-meta">
+                    <span>⏱️ Prep: 10 min</span>
+                    <span>🔥 Cook: 15 min</span>
+                    <span>🍽️ Serves: 4</span>
+                    <span>🏃 Easy Level</span>
+                </div>
+                
+                <div class="ingredients">
+                    <h3>🥕 Ingredients</h3>
+                    <ul>
+                        <li>2 chicken breasts, sliced thin</li>
+                        <li>1 large onion, sliced</li>
+                        <li>3 cloves garlic, minced</li>
+                        <li>2 bell peppers, sliced</li>
+                        <li>2 cups cooked rice</li>
+                        <li>2 tbsp soy sauce</li>
+                        <li>1 tbsp vegetable oil</li>
+                        <li>1 tsp fresh ginger, minced</li>
+                        <li>Salt and pepper to taste</li>
+                    </ul>
+                </div>
+                
+                <div class="instructions">
+                    <h3>👨‍🍳 Instructions</h3>
+                    <ol>
+                        <li>Heat oil in a large pan or wok over medium-high heat</li>
+                        <li>Add chicken pieces and cook until golden brown, about 5-6 minutes</li>
+                        <li>Add onions and garlic, stir-fry for 2 minutes until fragrant</li>
+                        <li>Add bell peppers and cook for 3-4 minutes until tender-crisp</li>
+                        <li>Add soy sauce and ginger, stir well to combine</li>
+                        <li>Season with salt and pepper, serve hot over cooked rice</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="amazon-products">
+                <h3>🛒 Recommended Products from Amazon</h3>
+                <div class="product-grid">
+                    <div class="product-item">
+                        <div class="product-icon">🥢</div>
+                        <h4>Premium Soy Sauce</h4>
+                        <div class="price">$8.99</div>
+                        <small>⭐⭐⭐⭐⭐ 4.8/5</small>
+                    </div>
+                    <div class="product-item">
+                        <div class="product-icon">🍳</div>
+                        <h4>Non-stick Wok Pan</h4>
+                        <div class="price">$24.99</div>
+                        <small>⭐⭐⭐⭐⭐ 4.7/5</small>
+                    </div>
+                    <div class="product-item">
+                        <div class="product-icon">🧄</div>
+                        <h4>Fresh Ginger</h4>
+                        <div class="price">$3.49</div>
+                        <small>⭐⭐⭐⭐ 4.5/5</small>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="cta-button" onclick="showPaywall()" style="width: calc(100% - 80px); margin: 20px 40px;">💾 Save Recipe to Collection (Premium)</button>
+        </div>
+        
+        <!-- Screen 4: Membership -->
+        <div id="membership" class="screen">
+            <div class="header">
+                <div class="logo">🍳 AI Recipe Chef</div>
+                <div class="nav">
+                    <div class="nav-item" onclick="showScreen('landing')">Home</div>
+                    <div class="nav-item" onclick="showScreen('generator')">Create Recipe</div>
+                    <div class="nav-item premium" onclick="showScreen('membership')">Go Premium ✨</div>
+                    <div class="nav-item">Login</div>
+                </div>
+            </div>
+            
+            <button class="back-button" onclick="showScreen('landing')">← Back to Home</button>
+            
+            <div class="membership-card">
+                <h2>✨ Go Premium</h2>
+                <p class="subtitle">Unlock unlimited recipes and advanced features</p>
+                <div class="price">$9.99<span style="font-size: 24px; font-weight: 400;">/month</span></div>
+                
+                <div class="benefits">
+                    <h3>🎯 Premium Benefits</h3>
+                    <ul>
+                        <li>✅ Unlimited recipe generation</li>
+                        <li>💾 Save recipes to personal collection</li>
+                        <li>🎨 Advanced dietary customization</li>
+                        <li>📊 Detailed nutrition information</li>
+                        <li>📝 Automatic shopping list generation</li>
+                        <li>⭐ Recipe rating and reviews</li>
+                        <li>💬 Priority customer support</li>
+                        <li>🍽️ Access to premium cuisines</li>
+                    </ul>
+                </div>
+                
+                <button class="cta-button" style="width: 100%; margin-top: 20px;">🚀 Start Free 7-Day Trial</button>
+                <p style="margin-top: 20px; font-size: 16px; color: #a0aec0;">Cancel anytime. No commitments.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Paywall Modal -->
+    <div id="paywall" class="paywall">
+        <div class="paywall-content">
+            <h2>🔒 Premium Feature</h2>
+            <p>This feature requires a Premium membership</p>
+            <p>Unlock unlimited recipes and save your favorites!</p>
+            <button class="cta-button" onclick="showScreen('membership'); hidePaywall()" style="margin: 24px 10px 10px 0;">✨ Upgrade Now</button>
+            <button class="back-button" onclick="hidePaywall()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        let currentScreen = 'landing';
+        let recipeCount = 0;
+        
+        function showScreen(screenId) {
+            // Add exit animation to current screen
+            const currentScreenEl = document.querySelector('.screen.active');
+            if (currentScreenEl) {
+                currentScreenEl.style.animation = 'fadeOut 0.3s ease-in-out';
+                setTimeout(() => {
+                    currentScreenEl.classList.remove('active');
+                    currentScreenEl.style.animation = '';
+                }, 300);
+            }
+            
+            // Show new screen with entrance animation
+            setTimeout(() => {
+                const screens = document.querySelectorAll('.screen');
+                screens.forEach(screen => screen.classList.remove('active'));
+                
+                const targetScreen = document.getElementById(screenId);
+                if (targetScreen) {
+                    targetScreen.classList.add('active');
+                    currentScreen = screenId;
+                }
+            }, 300);
+        }
+        
+        function generateRecipe() {
+            const button = event.target;
+            button.innerHTML = '🔮 Generating Magic...';
+            button.style.background = 'linear-gradient(135deg, #a855f7, #7c3aed)';
+            
+            // Simulate AI processing
+            setTimeout(() => {
+                recipeCount++;
+                showScreen('result');
+                button.innerHTML = 'Generate Amazing Recipe ✨';
+                button.style.background = 'linear-gradient(135deg, #ff6b6b, #ffa500)';
+                
+                // Update free limit counter
+                updateFreeLimit();
+            }, 2000);
+        }
+        
+        function updateFreeLimit() {
+            const remaining = Math.max(0, 3 - recipeCount);
+            const limitEl = document.querySelector('.free-limit');
+            if (remaining === 0) {
+                limitEl.innerHTML = '<strong>🚫 Free limit reached!</strong> <a href="#" onclick="showScreen(\'membership\')">Upgrade to continue creating recipes</a>';
+                limitEl.style.background = 'linear-gradient(135deg, #fed7d7, #feb2b2)';
+            } else {
+                limitEl.innerHTML = `<strong>🎯 Free Account:</strong> ${remaining} recipes remaining today. <a href="#" onclick="showScreen('membership')">Upgrade for unlimited recipes</a>`;
+            }
+        }
+        
+        function showPaywall() {
+            document.getElementById('paywall').classList.add('active');
+        }
+        
+        function hidePaywall() {
+            document.getElementById('paywall').classList.remove('active');
+        }
+        
+        // Add smooth scrolling to top when switching screens
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // Enhanced hover effects for interactive elements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click ripple effect to buttons
+            const buttons = document.querySelectorAll('.cta-button, .nav-item, .product-item');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const ripple = document.createElement('span');
+                    const rect = button.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.cssText = `
+                        position: absolute;
+                        border-radius: 50%;
+                        background: rgba(255, 255, 255, 0.6);
+                        pointer-events: none;
+                        width: ${size}px;
+                        height: ${size}px;
+                        left: ${x}px;
+                        top: ${y}px;
+                        animation: ripple 0.6s ease-out;
+                    `;
+                    
+                    button.style.position = 'relative';
+                    button.style.overflow = 'hidden';
+                    button.appendChild(ripple);
+                    
+                    setTimeout(() => ripple.remove(), 600);
+                });
+            });
+            
+            // Add floating animation keyframes
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeOut {
+                    from { opacity: 1; transform: translateY(0); }
+                    to { opacity: 0; transform: translateY(-20px); }
+                }
+                
+                @keyframes ripple {
+                    0% { transform: scale(0); opacity: 1; }
+                    100% { transform: scale(2); opacity: 0; }
+                }
+                
+                .feature:hover .feature-icon {
+                    animation: bounce 0.6s ease-in-out;
+                }
+                
+                @keyframes bounce {
+                    0%, 20%, 60%, 100% { transform: translateY(0); }
+                    40% { transform: translateY(-10px); }
+                    80% { transform: translateY(-5px); }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html>
