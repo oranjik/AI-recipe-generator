@@ -21,7 +21,13 @@
     "clean": "rm -rf node_modules package-lock.json && npm install",
     "health-check": "curl -f http://localhost:3000/api/health || exit 1"
   },
-  "keywords": ["ai", "recipe", "food", "cooking", "openai"],
+  "keywords": [
+    "ai",
+    "recipe",
+    "food",
+    "cooking",
+    "openai"
+  ],
   "author": "AI Recipe Chef Team",
   "license": "MIT",
   "dependencies": {
@@ -33,7 +39,7 @@
     "openai": "^4.20.1",
     "@supabase/supabase-js": "^2.38.4",
     "stripe": "^14.7.0",
-    "amazon-paapi": "^1.1.1",
+    "amazon-paapi": "^1.0.7",
     "redis": "^4.6.10",
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",
